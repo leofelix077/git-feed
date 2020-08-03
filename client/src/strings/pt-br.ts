@@ -19,7 +19,4 @@ export default {
     repos: "Git Repos",
     "not-found": "Página não encontrada",
   },
-  repos: {
-    send: "Enviar",
-  },
 };

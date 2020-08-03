@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
-import { TextField, makeStyles, Button } from "@material-ui/core";
-import { useTranslation } from "react-i18next";
+import { TextField, makeStyles } from "@material-ui/core";
+import PropTypes from "prop-types";
+
+interface SearchBarProps {
+  handleChange: (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  value: string;
+}
 
 const useStyles = makeStyles((theme) => ({
   searchField: {
@@ -34,17 +41,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SearchBar: React.FC = (): ReturnType<React.FC> => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  handleChange,
+  value,
+}): ReturnType<React.FC<SearchBarProps>> => {
   const classes = useStyles();
-
-  const { t } = useTranslation("feed");
 
   return (
     <div className={classes.searchFieldContainer}>
       <TextField
         className={classes.searchField}
-        id="place"
-        label="URL"
+        id="queryString"
+        label="Search"
         type="search"
         InputLabelProps={{
           shrink: true,
@@ -55,9 +63,14 @@ export const SearchBar: React.FC = (): ReturnType<React.FC> => {
         classes={{
           root: classes.textFieldRoot,
         }}
-        onChange={(event) => console.log(event)}
-        value="dummy"
+        onChange={handleChange}
+        value={value}
       />
     </div>
   );
+};
+
+SearchBar.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
 };
