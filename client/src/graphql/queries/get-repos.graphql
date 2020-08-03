@@ -7,34 +7,6 @@ query GetRepos($queryString: String!, $repos: Int!) {
           name
           url
           description
-          repositoryTopics(first: 12) {
-            nodes {
-              topic {
-                name
-              }
-            }
-          }
-          primaryLanguage {
-            name
-          }
-          languages(first: 3) {
-            nodes {
-              name
-            }
-          }
-          releases {
-            totalCount
-          }
-          forkCount
-          pullRequests {
-            totalCount
-          }
-          stargazers {
-            totalCount
-          }
-          issues {
-            totalCount
-          }
           createdAt
           pushedAt
           updatedAt

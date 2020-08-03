@@ -1,7 +1,27 @@
 import React from "react";
 import { Repository } from "../graphql/graphql";
 import PropTypes from "prop-types";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: "flex",
+    padding: theme.spacing(1),
+    flexDirection: "column",
+    borderRadius: 3,
+    backgroundColor: "rgba(32,32,32,0.3)",
+    margin: theme.spacing(1),
+  },
+  header: {
+    fontSize: 16,
+    marginBottom: theme.spacing(2),
+  },
+  description: {
+    fontSize: 10,
+    color: "EDEDED",
+  },
+  url: {},
+}));
 
 interface RepoItemProps {
   repo: Pick<
@@ -19,23 +39,16 @@ interface RepoItemProps {
 const RepoItem: React.FC<RepoItemProps> = ({
   repo,
 }): ReturnType<React.FC<RepoItemProps>> => {
+  const classes = useStyles();
+
   return (
-    <Grid
-      container
-      item
-      style={{
-        display: "flex",
-        padding: 8,
-        flexDirection: "column",
-        borderRadius: 3,
-        backgroundColor: "rgba(64,64,64,0.3)",
-        margin: 8,
-      }}
-    >
-      <Typography component="h6">Name: {repo.name}</Typography>
-      <Typography component="h6">Description: {repo.description}</Typography>
-      <Typography component="h6">Forks: {repo.forkCount}</Typography>
-      <Typography component="h6">URL: {repo.url}</Typography>
+    <Grid container item className={classes.container}>
+      <Link href={repo.url} target="_blank">
+        {repo.name}
+      </Link>
+      <Typography className={classes.description} component="h6">
+        {repo.description}
+      </Typography>
     </Grid>
   );
 };

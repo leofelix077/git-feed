@@ -19267,60 +19267,10 @@ export type GetReposQuery = { __typename?: "Query" } & {
                     | "name"
                     | "url"
                     | "description"
-                    | "forkCount"
                     | "createdAt"
                     | "pushedAt"
                     | "updatedAt"
-                  > & {
-                      repositoryTopics: {
-                        __typename?: "RepositoryTopicConnection";
-                      } & {
-                        nodes?: Maybe<
-                          Array<
-                            Maybe<
-                              { __typename?: "RepositoryTopic" } & {
-                                topic: { __typename?: "Topic" } & Pick<
-                                  Topic,
-                                  "name"
-                                >;
-                              }
-                            >
-                          >
-                        >;
-                      };
-                      primaryLanguage?: Maybe<
-                        { __typename?: "Language" } & Pick<Language, "name">
-                      >;
-                      languages?: Maybe<
-                        { __typename?: "LanguageConnection" } & {
-                          nodes?: Maybe<
-                            Array<
-                              Maybe<
-                                { __typename?: "Language" } & Pick<
-                                  Language,
-                                  "name"
-                                >
-                              >
-                            >
-                          >;
-                        }
-                      >;
-                      releases: { __typename?: "ReleaseConnection" } & Pick<
-                        ReleaseConnection,
-                        "totalCount"
-                      >;
-                      pullRequests: {
-                        __typename?: "PullRequestConnection";
-                      } & Pick<PullRequestConnection, "totalCount">;
-                      stargazers: { __typename?: "StargazerConnection" } & Pick<
-                        StargazerConnection,
-                        "totalCount"
-                      >;
-                      issues: { __typename?: "IssueConnection" } & Pick<
-                        IssueConnection,
-                        "totalCount"
-                      >;
-                    })
+                  >)
                 | { __typename?: "User" }
               >;
             }
@@ -19340,34 +19290,6 @@ export const GetReposDocument = gql`
             name
             url
             description
-            repositoryTopics(first: 12) {
-              nodes {
-                topic {
-                  name
-                }
-              }
-            }
-            primaryLanguage {
-              name
-            }
-            languages(first: 3) {
-              nodes {
-                name
-              }
-            }
-            releases {
-              totalCount
-            }
-            forkCount
-            pullRequests {
-              totalCount
-            }
-            stargazers {
-              totalCount
-            }
-            issues {
-              totalCount
-            }
             createdAt
             pushedAt
             updatedAt
