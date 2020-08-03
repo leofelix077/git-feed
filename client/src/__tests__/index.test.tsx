@@ -6,6 +6,8 @@ import configureMockStore from "redux-mock-store";
 import "jsdom-global/register";
 import mockdate from "mockdate";
 import { getMockState } from "../test-data/mockState";
+import { MockedProvider } from "@apollo/client/testing";
+import { GetReposDocument } from "../graphql/graphql";
 
 const mockStore = configureMockStore();
 
@@ -16,10 +18,28 @@ describe("shell: ", () => {
 
     const storeProvider = mockStore(store);
 
+    const apolloMocks: any = [
+      {
+        request: {
+          query: GetReposDocument,
+          variables: {
+            name: "Buck",
+          },
+        },
+        result: {
+          data: {
+            dog: { id: "1", name: "Buck", breed: "bulldog" },
+          },
+        },
+      },
+    ];
+
     const wrapper = mount(
       (
         <Provider store={storeProvider}>
-          <div>empty</div>
+          <MockedProvider addTypename={false} mocks={apolloMocks}>
+            <div>empty</div>
+          </MockedProvider>
         </Provider>
       ) as any
     );
