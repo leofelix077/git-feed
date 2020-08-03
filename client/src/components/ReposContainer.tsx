@@ -3,6 +3,7 @@ import { useGetReposQuery, Repository } from "../graphql/graphql";
 import { SearchBar } from "./SearchBar";
 import { makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
+import RepoItem from "./RepoItem";
 
 interface ReposContainerProps {
   queryStringProp?: string;
@@ -39,9 +40,22 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
       <SearchBar handleChange={handleTextChange} value={queryString} />
       {data &&
         data.search.edges &&
-        data.search.edges.map((repo: any & { node: Repository }) => (
-          <div key={repo.node.url}>{repo.node.forkCount}</div>
-        ))}
+        data.search.edges.map(
+          (
+            repo: any & {
+              node: Pick<
+                Repository,
+                | "name"
+                | "url"
+                | "description"
+                | "forkCount"
+                | "createdAt"
+                | "pushedAt"
+                | "updatedAt"
+              >;
+            }
+          ) => <RepoItem key={repo.node.url} repo={repo.node} />
+        )}
     </div>
   );
 };
