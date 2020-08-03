@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { useGetReposQuery, Repository } from "../graphql/graphql";
 import { SearchBar } from "./SearchBar";
 import { makeStyles } from "@material-ui/core";
+import PropTypes from "prop-types";
 
-const useStyles = makeStyles((theme) => ({
+interface ReposContainerProps {
+  queryStringProp?: string;
+}
+
+const useStyles = makeStyles(() => ({
   container: { flex: 1 },
 }));
 
-const ReposContainer: React.FC = (): ReturnType<React.FC> => {
-  const [queryString, setQueryString] = useState("");
+const ReposContainer: React.FC<ReposContainerProps> = ({
+  queryStringProp,
+}): ReturnType<React.FC<ReposContainerProps>> => {
+  const [queryString, setQueryString] = useState(queryStringProp || "");
   const classes = useStyles();
 
   const { data, error, loading } = useGetReposQuery({
@@ -18,8 +25,6 @@ const ReposContainer: React.FC = (): ReturnType<React.FC> => {
     },
     skip: !queryString,
   });
-
-  console.log(loading, data);
 
   const handleTextChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -34,13 +39,19 @@ const ReposContainer: React.FC = (): ReturnType<React.FC> => {
       <SearchBar handleChange={handleTextChange} value={queryString} />
       {data &&
         data.search.edges &&
-        data.search.edges.map((repo) => (
-          <div>
-            {repo && repo.node ? (repo.node as Repository).forkCount : ""}
-          </div>
+        data.search.edges.map((repo: any & { node: Repository }) => (
+          <div key={repo.node.id}>{repo.node.forkCount}</div>
         ))}
     </div>
   );
+};
+
+ReposContainer.propTypes = {
+  queryStringProp: PropTypes.string,
+};
+
+ReposContainer.defaultProps = {
+  queryStringProp: "",
 };
 
 export default ReposContainer;

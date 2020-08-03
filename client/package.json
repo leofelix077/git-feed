@@ -16,6 +16,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
     "history": "^4.10.1",
     "html-to-react": "^1.4.3",
     "i18next": "^19.4.4",
@@ -66,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "@apollo/react-testing": "^4.0.0",
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
