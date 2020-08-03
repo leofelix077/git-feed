@@ -81,7 +81,7 @@ ReactDOM.render(
           </ConnectedRouter>
         </ReduxStoreProvider>
       </MuiThemeProvider>
-    </ApolloProvider>{" "}
+    </ApolloProvider>
   </I18nextProvider>,
   document.getElementById("root")
 );

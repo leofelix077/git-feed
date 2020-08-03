@@ -4,5 +4,3 @@ export enum SupportedLocale {
 }
 
 export const LOCALE_KEY = "locale";
-
-export type SortDirection = "asc" | "desc";
