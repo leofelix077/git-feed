@@ -1,0 +1,13 @@
+schema: ./client/src/graphql/schema.docs.graphql
+documents: "./client/src/graphql/queries/**/*.graphql"
+generates:
+  "./client/src/graphql/graphql.ts":
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withComponent: false
+      withHooks: true
+      reactApolloVersion: 3
+      withHOC: false
