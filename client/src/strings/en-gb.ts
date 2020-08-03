@@ -17,4 +17,7 @@ export default {
     repos: "Git Repos",
     "not-found": "Page Not Found ",
   },
+  repoContainer: {
+    loading: "Loading...",
+  },
 };

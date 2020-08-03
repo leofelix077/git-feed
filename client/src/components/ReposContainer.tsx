@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { useGetReposQuery, Repository } from "../graphql/graphql";
 import { SearchBar } from "./SearchBar";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import RepoItem from "./RepoItem";
+import { useTranslation } from "react-i18next";
 
 interface ReposContainerProps {
   queryStringProp?: string;
 }
 
 const useStyles = makeStyles(() => ({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+  },
+  loadingText: {
+    fontSize: 12,
+    color: "white",
+  },
 }));
 
 const ReposContainer: React.FC<ReposContainerProps> = ({
@@ -18,6 +25,7 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
 }): ReturnType<React.FC<ReposContainerProps>> => {
   const [queryString, setQueryString] = useState(queryStringProp || "");
   const classes = useStyles();
+  const { t } = useTranslation("repoContainer");
 
   const { data, error, loading } = useGetReposQuery({
     variables: {
@@ -25,6 +33,7 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
       queryString,
     },
     skip: !queryString,
+    errorPolicy: "all",
   });
 
   const handleTextChange = (
@@ -35,9 +44,13 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
 
   return (
     <div className={classes.container} key="repo-container">
-      {loading && <div> loading ....</div>}
-      {error && <div> error ....</div>}
       <SearchBar handleChange={handleTextChange} value={queryString} />
+      {loading && !error && (
+        <Typography className={classes.loadingText}>{t("loading")}</Typography>
+      )}
+      {error && (
+        <Typography className={classes.loadingText}>{error.message}</Typography>
+      )}
       {data &&
         data.search.edges &&
         data.search.edges.map(
