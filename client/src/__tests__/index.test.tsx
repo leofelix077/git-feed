@@ -1,25 +1,16 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import { describe, expect, it } from "@jest/globals";
-import { Provider } from "react-redux";
-import configureMockStore from "redux-mock-store";
 import "jsdom-global/register";
 import mockdate from "mockdate";
-import { getMockState } from "../test-data/mockState";
 import { MockedProvider } from "@apollo/client/testing";
 import { GetReposDocument } from "../graphql/graphql";
 import ReposContainer from "../components/ReposContainer";
 import { act } from "react-dom/test-utils";
-import { wait } from "@testing-library/react";
-
-const mockStore = configureMockStore();
 
 describe("shell: ", () => {
   it("renders correctly", async () => {
     mockdate.set(1593118700000);
-    const store = getMockState();
-
-    const storeProvider = mockStore(store);
 
     const apolloMocks: any = [
       {
@@ -589,17 +580,18 @@ describe("shell: ", () => {
       },
     ];
 
-    const wrapper = mount(
-      (
-        <MockedProvider mocks={apolloMocks}>
-          <ReposContainer queryStringProp="test" />
-        </MockedProvider>
-      ) as any
-    );
-
-    wrapper.update();
-
-    await new Promise((resolve) => setTimeout(resolve));
+    let wrapper: any;
+    await act(async () => {
+      wrapper = mount(
+        (
+          <MockedProvider mocks={apolloMocks}>
+            <ReposContainer queryStringProp="test" />
+          </MockedProvider>
+        ) as any
+      );
+      wrapper.update();
+      await new Promise((resolve) => setTimeout(resolve));
+    });
 
     expect(wrapper.html()).toMatchSnapshot();
   });

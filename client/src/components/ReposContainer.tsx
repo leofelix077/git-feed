@@ -33,14 +33,14 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
   };
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} key="repo-container">
       {loading && <div> loading ....</div>}
       {error && <div> error ....</div>}
       <SearchBar handleChange={handleTextChange} value={queryString} />
       {data &&
         data.search.edges &&
         data.search.edges.map((repo: any & { node: Repository }) => (
-          <div key={repo.node.id}>{repo.node.forkCount}</div>
+          <div key={repo.node.url}>{repo.node.forkCount}</div>
         ))}
     </div>
   );
