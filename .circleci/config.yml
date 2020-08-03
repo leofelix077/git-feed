@@ -1,0 +1,79 @@
+version: 2
+jobs:
+  build-client:
+    docker:
+      - image: circleci/node:12.16.3
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - restore_cache:
+          keys:
+            - v2-deps-git-repos-app-web-{{ checksum "client/package.json" }}
+            - v2-deps-git-repos-app-web-
+      - run: cd client && yarn install
+      - save_cache:
+          paths:
+            - client/node_modules
+          key: v2-deps-git-repos-app-web-{{ checksum "client/package.json" }}
+      - run: |
+          if [ ! -z "$CIRCLE_PULL_REQUEST" ] || [ "$CIRCLE_BRANCH" == "develop" ] || [ "$CIRCLE_BRANCH" == "master" ] ; then
+            cd client && yarn test
+          fi
+      - run: |
+          cd client && yarn lint && yarn build:ci
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - client/build
+      - store_artifacts:
+          path: client/build
+          destination: client-build.zip
+
+  deploy-client:
+    docker:
+      - image: albelli/aws-codebuild-docker-images:latest
+    requires:
+      - build-client
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Deploy to S3 dev bucket
+          command: aws s3 sync client/build s3://git-repos.bunchofnothing.com --delete --exact-timestamps
+
+  deploy-client-dev:
+    docker:
+      - image: albelli/aws-codebuild-docker-images:latest
+    requires:
+      - build-client
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Deploy to S3 dev bucket
+          command: aws s3 sync client/build s3://git-repos-dev.bunchofnothing.com --delete --exact-timestamps
+
+workflows:
+  version: 2
+  basic-deploy:
+    jobs:
+      - build-client
+      - deploy-client:
+          context: AWS
+          requires:
+            - build-client
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-client-dev:
+          context: AWS
+          requires:
+            - build-client
+          filters:
+            branches:
+              only:
+                - develop

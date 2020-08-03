@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "build",
+    "isolatedModules": true,
+    "allowJs": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+  "include": ["src", "__mocks__", "testConfig"]
+}
