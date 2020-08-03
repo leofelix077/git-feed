@@ -8,8 +8,8 @@ import { GetReposDocument } from "../graphql/graphql";
 import ReposContainer from "../components/ReposContainer";
 import { act } from "react-dom/test-utils";
 
-describe("shell: ", () => {
-  it("renders correctly", async () => {
+describe("repos container", () => {
+  it("should render component with children", async () => {
     mockdate.set(1593118700000);
 
     const apolloMocks: any = [
