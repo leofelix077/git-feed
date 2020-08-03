@@ -14,10 +14,10 @@ export default {
   },
   routes: {
     home: "Home",
-    feed: "Git Repos",
+    repos: "Git Repos",
     "not-found": "Page Not Found ",
   },
-  feed: {
+  repos: {
     send: "Send",
   },
 };

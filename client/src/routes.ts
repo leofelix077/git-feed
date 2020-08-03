@@ -1,4 +1,5 @@
 import Home from "./components/Home";
+import ReposContainer from "./components/ReposContainer";
 
 export interface RouteConfig {
   public: boolean;
@@ -26,6 +27,15 @@ const ROUTES: Routes = {
     exact: true,
     translate: "home",
     key: "home",
+  },
+  repos: {
+    component: ReposContainer,
+    path: "/repos",
+    public: true,
+    label: "Repos",
+    exact: true,
+    translate: "repos",
+    key: "repos",
   },
 };
 

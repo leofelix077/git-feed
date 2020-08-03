@@ -1,0 +1,45 @@
+query GetRepos($queryString: String!, $repos: Int!) {
+  search(query: $queryString, type: REPOSITORY, first: $repos) {
+    repositoryCount
+    edges {
+      node {
+        ... on Repository {
+          name
+          url
+          description
+          repositoryTopics(first: 12) {
+            nodes {
+              topic {
+                name
+              }
+            }
+          }
+          primaryLanguage {
+            name
+          }
+          languages(first: 3) {
+            nodes {
+              name
+            }
+          }
+          releases {
+            totalCount
+          }
+          forkCount
+          pullRequests {
+            totalCount
+          }
+          stargazers {
+            totalCount
+          }
+          issues {
+            totalCount
+          }
+          createdAt
+          pushedAt
+          updatedAt
+        }
+      }
+    }
+  }
+}

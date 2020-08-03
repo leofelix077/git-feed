@@ -16,10 +16,10 @@ export default {
   },
   routes: {
     home: "Principal",
-    feed: "Git Repos",
+    repos: "Git Repos",
     "not-found": "Página não encontrada",
   },
-  feed: {
+  repos: {
     send: "Enviar",
   },
 };

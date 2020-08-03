@@ -9,9 +9,7 @@ import {
 
 const request = async (operation: Operation): Promise<void> => {
   const headers: { [header: string]: string | number } = {};
-  // if (authToken) {
-  //   headers.Authorization = `Bearer ${authToken}`;
-  // }
+  headers.Authorization = `Bearer f77540cbf47367d57023da07eca94058649d0c3b`;
 
   operation.setContext({
     headers,
