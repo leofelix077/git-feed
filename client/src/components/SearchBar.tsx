@@ -2,6 +2,8 @@
 import React from "react";
 import { TextField, makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/rootReducer";
 
 interface SearchBarProps {
   handleChange: (
@@ -46,6 +48,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   value,
 }): ReturnType<React.FC<SearchBarProps>> => {
   const classes = useStyles();
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.authState.isLoggedIn
+  );
 
   return (
     <div className={classes.searchFieldContainer}>
@@ -65,6 +70,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         }}
         onChange={handleChange}
         value={value}
+        disabled={!isLoggedIn}
       />
     </div>
   );

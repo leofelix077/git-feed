@@ -10,6 +10,7 @@ export default {
   errors: {
     generic:
       "Oops. Um erro ocorreu. Certifique-se que você tem conexão ativa e uma string válida",
+    network: "Oops. Um erro ocorreu durante a busca de dados. Tente novamente.",
   },
   general: {
     loading: "Carregando...",

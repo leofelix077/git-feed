@@ -1,0 +1,40 @@
+service: git-feed-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  timeout: 10
+  region: eu-central-1
+  iamRoleStatements: ${file(./templates/iam.yml)}
+
+custom:
+  dev:
+    LOG_LEVEL: debug
+    GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-dev~true}
+    GITHUB_CLIENT_ID: <insert-dev-client-here>
+    GITHUB_REDIRECT_URI: "https://something.com"
+  prod:
+    LOG_LEVEL: debug
+    GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-prod~true}
+    GITHUB_CLIENT_ID: <insert-prod-client-here>
+    GITHUB_REDIRECT_URI: "https://something.com"
+  webpack:
+    packager: yarn
+
+package:
+  individually: true
+
+functions:
+  github-auth:
+    handler: functions/github-auth/src/index.handler
+    environment:
+      SERVICE_NAME: ${self:service}-${opt:stage, self:provider.stage}-github-auth
+      LOG_LEVEL: ${self:custom.${opt:stage, self:provider.stage}.LOG_LEVEL}
+      GITHUB_CLIENT_SECRET: ${self:custom.${opt:stage, self:provider.stage}.GITHUB_CLIENT_SECRET}
+      GITHUB_CLIENT_ID: ${self:custom.${opt:stage, self:provider.stage}.GITHUB_CLIENT_ID}
+      GITHUB_REDIRECT_URI: ${self:custom.${opt:stage, self:provider.stage}.GITHUB_REDIRECT_URI}
+
+plugins:
+  - serverless-webpack
+  - serverless-pseudo-parameters
+  - serverless-step-functions
