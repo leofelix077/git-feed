@@ -31,6 +31,9 @@ export async function handler(event: { body: any }): Promise<any> {
     statusCode: responseCode,
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "https://git-repos-dev.bunchofnothing.com",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
     },
     body: JSON.stringify(userInfo),
   };
