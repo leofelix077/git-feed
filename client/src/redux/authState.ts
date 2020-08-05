@@ -50,9 +50,8 @@ export const loginSuccess = (user: any): LoginSuccess => ({
 });
 
 export const initialState: LoginState = {
-  isLoggedIn:
-    JSON.parse(localStorage.getItem(LOCAL_STORAGE_LOGGED_IN) as any) || false,
-  user: JSON.parse(localStorage.getItem(LOCAL_STORAGE_USER) as any) || null,
+  isLoggedIn: false,
+  user: null,
 };
 
 export function authStateReducer(

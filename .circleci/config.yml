@@ -82,7 +82,7 @@ jobs:
           root: .
           paths: ./*
       - run: cd api && yarn workspaces run lint
-      - run: cd api && yarn workspaces run test
+      # - run: cd api && yarn workspaces run test
 
   deploy-api:
     docker:
