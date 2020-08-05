@@ -5,7 +5,6 @@ export async function transport(params: { [key: string]: any }): Promise<any> {
     method: params.method,
     body: params.body,
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
   };
@@ -14,6 +13,7 @@ export async function transport(params: { [key: string]: any }): Promise<any> {
   try {
     response = await fetch(params.url, options);
   } catch (error) {
+    console.log(error);
     throw new Error(i18next.t("errors:network"));
   }
 
@@ -22,6 +22,7 @@ export async function transport(params: { [key: string]: any }): Promise<any> {
     try {
       error = await response.json();
     } catch (innerError) {
+      console.log(error);
       throw new Error(i18next.t("errors:network"));
     }
     throw error;
