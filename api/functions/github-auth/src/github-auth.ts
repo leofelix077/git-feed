@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import fetch from "cross-fetch";
 import {
   GITHUB_CLIENT_ID,
@@ -8,15 +9,14 @@ import {
 // const logger = createLogger("github-auth");
 
 export async function gitHubAuth(code: string): Promise<any> {
-  const data = new FormData();
-  data.append("client_id", GITHUB_CLIENT_ID);
-  data.append("client_secret", GITHUB_CLIENT_SECRET);
-  data.append("code", code);
-  data.append("redirect_uri", GITHUB_REDIRECT_URI);
-
   const res = await fetch(`https://github.com/login/oauth/access_token`, {
     method: "POST",
-    body: data,
+    body: JSON.stringify({
+      client_id: GITHUB_CLIENT_ID,
+      client_secret: GITHUB_CLIENT_SECRET,
+      code,
+      redirect_uri: GITHUB_REDIRECT_URI,
+    }),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
