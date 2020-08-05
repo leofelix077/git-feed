@@ -1,9 +1,14 @@
 /* eslint-disable no-param-reassign */
 import produce from "immer";
-import { LOCAL_STORAGE_LOGGED_IN, LOCAL_STORAGE_USER } from "../constants";
+import {
+  LOCAL_STORAGE_LOGGED_IN,
+  LOCAL_STORAGE_USER,
+  GITHUB_CLIENT_ID,
+} from "../constants";
 import { storeValue } from "../lib/storeLocal";
-import { takeLatest, put } from "redux-saga/effects";
+import { takeLatest, put, call, all } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
+import { transport } from "../lib/transport";
 
 export const AUTH = {
   LOGIN_REQUEST: "AUTH.LOGIN_REQUEST",
@@ -74,17 +79,22 @@ export function authStateReducer(
   }
 }
 
-// function* authenticationSaga(action: { code: string }): any {
-//   const { code } = action;
+function* authenticationSaga(action: { code: string }): SagaIterator {
+  const { code } = action;
 
-//   // yield call(storeValue, LOCALE_KEY, locale);
-//   // storeValue(
-//   //   LOCAL_STORAGE_LOGGED_IN,
-//   //   JSON.stringify(true)
-//   // );
-//   // storeValue(LOCAL_STORAGE_USER, JSON.stringify(user));
-// }
+  const userInfo = yield call(transport, {
+    url: "https://api-dev.bunchofnothing.com/github-auth",
+    body: JSON.stringify({ code, clientId: GITHUB_CLIENT_ID }),
+    method: "POST",
+  });
 
-// export function* authRootSaga(): SagaIterator {
-//   // yield takeLatest(AUTH.LOGIN_REQUEST as any, authenticationSaga);
-// }
+  yield all([
+    call(storeValue, LOCAL_STORAGE_LOGGED_IN, JSON.stringify(true)),
+    call(storeValue, LOCAL_STORAGE_USER, JSON.stringify(userInfo)),
+    put(loginSuccess(userInfo)),
+  ]);
+}
+
+export function* authRootSaga(): SagaIterator {
+  yield takeLatest(AUTH.LOGIN_REQUEST as any, authenticationSaga);
+}

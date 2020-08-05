@@ -29,6 +29,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "cross-fetch": "^3.0.5",
     "pino": "^6.2.0"
   }
 }

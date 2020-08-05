@@ -11,13 +11,13 @@ custom:
   dev:
     LOG_LEVEL: debug
     GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-dev~true}
-    GITHUB_CLIENT_ID: <insert-dev-client-here>
-    GITHUB_REDIRECT_URI: "https://something.com"
+    GITHUB_CLIENT_ID: b9c15e8cbcaa663ed1f7
+    GITHUB_REDIRECT_URI: "https://git-repos-dev.bunchofnothing.com/repos"
   prod:
     LOG_LEVEL: debug
     GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-prod~true}
-    GITHUB_CLIENT_ID: <insert-prod-client-here>
-    GITHUB_REDIRECT_URI: "https://something.com"
+    GITHUB_CLIENT_ID: de35513896095c9a5ad6
+    GITHUB_REDIRECT_URI: "https://git-repos.bunchofnothing.com/repos"
   webpack:
     packager: yarn
 

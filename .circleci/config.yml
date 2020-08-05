@@ -51,7 +51,7 @@ jobs:
 
   deploy-client-dev:
     docker:
-      - image: albelli/aws-codebuild-docker-images:latest
+      - image: circleci/node:12.16.3
     requires:
       - build-client
     working_directory: ~/repo
@@ -64,7 +64,7 @@ jobs:
 
   build-api:
     docker:
-      - image: albelli/aws-codebuild-docker-images:latest
+      - image: circleci/node:12.16.3
     steps:
       - checkout
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
@@ -84,10 +84,9 @@ jobs:
       - run: cd api && yarn workspaces run lint
       - run: cd api && yarn workspaces run test
 
-  # Added deployment of api
   deploy-api:
     docker:
-      - image: albelli/aws-codebuild-docker-images:latest
+      - image: softinstigate/serverless
     steps:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - attach_workspace:
