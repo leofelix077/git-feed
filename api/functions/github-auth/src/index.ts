@@ -10,8 +10,12 @@ export async function handler(event: { body: any }): Promise<any> {
   let clientId = null;
   let userInfo = {};
 
+  logger.info(event, "received event");
+
   if (event.body) {
     const body = JSON.parse(event.body);
+    logger.info(body, "request body");
+
     code = body.code;
     clientId = body.clientId;
   }
@@ -37,5 +41,7 @@ export async function handler(event: { body: any }): Promise<any> {
     },
     body: JSON.stringify(userInfo),
   };
+
+  logger.info(response, "response");
   return response;
 }
