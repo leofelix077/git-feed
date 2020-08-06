@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 import produce from "immer";
 import {
@@ -6,7 +7,7 @@ import {
   GITHUB_CLIENT_ID,
 } from "../constants";
 import { storeValue } from "../lib/storeLocal";
-import { takeLatest, put, call, all } from "redux-saga/effects";
+import { takeLatest, put, call, all, delay } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 import { transport } from "../lib/transport";
 
@@ -80,18 +81,22 @@ export function authStateReducer(
 
 function* authenticationSaga(action: { code: string }): SagaIterator {
   const { code } = action;
+  yield delay(1000);
+  try {
+    const userInfo = yield call(transport, {
+      url: "https://api-dev.bunchofnothing.com/github-auth",
+      body: JSON.stringify({ code, clientId: GITHUB_CLIENT_ID }),
+      method: "POST",
+    });
 
-  const userInfo = yield call(transport, {
-    url: "https://api-dev.bunchofnothing.com/github-auth",
-    body: JSON.stringify({ code, clientId: GITHUB_CLIENT_ID }),
-    method: "POST",
-  });
-
-  yield all([
-    call(storeValue, LOCAL_STORAGE_LOGGED_IN, JSON.stringify(true)),
-    call(storeValue, LOCAL_STORAGE_USER, JSON.stringify(userInfo)),
-    put(loginSuccess(userInfo)),
-  ]);
+    yield all([
+      call(storeValue, LOCAL_STORAGE_LOGGED_IN, JSON.stringify(true)),
+      call(storeValue, LOCAL_STORAGE_USER, JSON.stringify(userInfo)),
+      put(loginSuccess(userInfo)),
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function* authRootSaga(): SagaIterator {

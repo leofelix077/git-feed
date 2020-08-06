@@ -15,7 +15,7 @@ let GIT_REDIRECT_URI = "https://git-repos.bunchofnothing.com/repos";
 
 if (useDevEnvironment) {
   GIT_CLIENT_ID = "b9c15e8cbcaa663ed1f7";
-  GIT_REDIRECT_URI = "https://git-repos-dev.bunchofnothing.com/repos";
+  GIT_REDIRECT_URI = "http://localhost:3000/repos";
 }
 
 export const GITHUB_CLIENT_ID = GIT_CLIENT_ID;

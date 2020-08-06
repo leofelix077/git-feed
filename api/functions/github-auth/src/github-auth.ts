@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/camelcase */
 import fetch from "cross-fetch";
 import {
@@ -24,6 +25,8 @@ export async function gitHubAuth(code: string): Promise<any> {
   });
   const response = await res.json();
 
+  console.log(response);
+
   const userRes = await fetch(
     `https://api.github.com/user?access_token=${response.access_token}&scope=${response.scope}&token_type=${response.token_type}`,
     {
@@ -33,6 +36,8 @@ export async function gitHubAuth(code: string): Promise<any> {
     }
   );
   const user = await userRes.json();
+
+  console.log(user);
 
   return { user, token: response.access_token };
 }

@@ -64,9 +64,10 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
     const hasCode = url.includes("?code=");
     if (hasCode) {
       const splitUrl = url.split("?code=");
+      window.history.pushState({}, "", splitUrl[0]);
       dispatch(requestLogin(splitUrl[1].slice(0, 20)));
     }
-  }, [window.location.href]);
+  }, [dispatch]);
 
   const handleTextChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

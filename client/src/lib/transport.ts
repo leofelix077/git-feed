@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import i18next from "./i18next";
 
 export async function transport(params: { [key: string]: any }): Promise<any> {
@@ -22,7 +23,7 @@ export async function transport(params: { [key: string]: any }): Promise<any> {
     try {
       error = await response.json();
     } catch (innerError) {
-      console.log(error);
+      console.log(innerError);
       throw new Error(i18next.t("errors:network"));
     }
     throw error;

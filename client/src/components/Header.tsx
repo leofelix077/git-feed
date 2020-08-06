@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Route, Switch, Redirect, matchPath, withRouter } from "react-router";
+import { Route, Switch, withRouter } from "react-router";
 import ROUTES, { Routes, RouteConfig } from "../routes";
 import { NavLink } from "react-router-dom";
 import { ListItemIcon, Typography, Hidden } from "@material-ui/core";
@@ -99,16 +99,6 @@ const MenuAppBar: React.FC = (): ReturnType<React.FC> => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const { t } = useTranslation("routes");
-
-  if (
-    matchPath(window.location.pathname, {
-      path: "/",
-      exact: true,
-      strict: true,
-    })
-  ) {
-    return <Redirect to="/repos" />;
-  }
 
   const drawRoutes = (routes: Routes, padding: number): any => (
     <div
