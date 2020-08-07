@@ -57,7 +57,7 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
         userInfo ? `user:${userInfo.user.login}` : ""
       } ${queryString}`,
     },
-    skip: !isLoggedIn,
+    skip: !isLoggedIn || !queryString,
     errorPolicy: "all",
   });
 
