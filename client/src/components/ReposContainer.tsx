@@ -53,7 +53,7 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
   const { data, error, loading } = useGetReposQuery({
     variables: {
       repos: 10,
-      queryString: `user: ${user.login} ${queryString}`,
+      queryString: `${user ? `user: ${user.login}` : ""} ${queryString}`,
     },
     skip: !queryString || !isLoggedIn,
     errorPolicy: "all",
