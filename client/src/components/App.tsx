@@ -23,6 +23,7 @@ const App: React.FC = (): ReturnType<React.FC> => {
   const dispatch = useDispatch();
   const preferredLocale = localStorage.getItem(LOCALE_KEY);
   const user = localStorage.getItem(LOCAL_STORAGE_USER);
+  const classes = useStyles();
 
   if (user) {
     dispatch(loginSuccess(JSON.parse(user)));
@@ -41,7 +42,6 @@ const App: React.FC = (): ReturnType<React.FC> => {
     return <Redirect to="/repos" />;
   }
 
-  const classes = useStyles();
   return (
     <div className={classes.root}>
       <Header />
