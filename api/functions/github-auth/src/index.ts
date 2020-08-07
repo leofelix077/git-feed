@@ -1,6 +1,6 @@
 import { createLogger } from "./log";
 import { gitHubAuth } from "./github-auth";
-import { GITHUB_CLIENT_ID } from "./env";
+import { GITHUB_CLIENT_ID, ALLOW_ORIGIN_URI } from "./env";
 
 const logger = createLogger("index");
 
@@ -36,7 +36,7 @@ export async function handler(event: { body: any }): Promise<any> {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Headers": "Content-Type, Accept",
-      "Access-Control-Allow-Origin": "https://git-repos-dev.bunchofnothing.com",
+      "Access-Control-Allow-Origin": ALLOW_ORIGIN_URI,
       "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
     },
     body: JSON.stringify(userInfo),

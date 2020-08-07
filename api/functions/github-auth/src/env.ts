@@ -15,3 +15,9 @@ if (!process.env.GITHUB_REDIRECT_URI) {
 }
 // eslint-disable-next-line prefer-destructuring
 export const GITHUB_REDIRECT_URI = process.env.GITHUB_REDIRECT_URI;
+
+if (!process.env.ALLOW_ORIGIN_URI) {
+  throw new Error("Environment variable ALLOW_ORIGIN_URI must be defined");
+}
+// eslint-disable-next-line prefer-destructuring
+export const ALLOW_ORIGIN_URI = process.env.ALLOW_ORIGIN_URI;
