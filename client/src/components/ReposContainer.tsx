@@ -48,14 +48,14 @@ const ReposContainer: React.FC<ReposContainerProps> = ({
   const isLoggedIn = useSelector(
     (state: RootState) => state.authState.isLoggedIn
   );
-  const user = useSelector((state: RootState) => state.authState.user);
-
-  console.log(user);
+  const userInfo = useSelector((state: RootState) => state.authState.user);
 
   const { data, error, loading } = useGetReposQuery({
     variables: {
       repos: 10,
-      queryString: `${user ? `user:${user.login}` : ""} ${queryString}`,
+      queryString: `${
+        userInfo ? `user:${userInfo.user.login}` : ""
+      } ${queryString}`,
     },
     skip: !isLoggedIn,
     errorPolicy: "all",
