@@ -6,10 +6,12 @@ import {
   Observable,
   Operation,
 } from "@apollo/client";
+import store from "../store";
 
 const request = async (operation: Operation): Promise<void> => {
   const headers: { [header: string]: string | number } = {};
-  headers.Authorization = `Bearer f77540cbf47367d57023da07eca94058649d0c3b`;
+  const user = await store.get().getState().authState.user;
+  headers.Authorization = `Bearer ${user.token}`;
 
   operation.setContext({
     headers,

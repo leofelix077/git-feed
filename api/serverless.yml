@@ -12,7 +12,7 @@ custom:
     LOG_LEVEL: debug
     GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-dev~true}
     GITHUB_CLIENT_ID: b9c15e8cbcaa663ed1f7
-    GITHUB_REDIRECT_URI: "http://localhost:3000/repos"
+    GITHUB_REDIRECT_URI: "https://git-repos-dev.bunchofnothing.com/repos"
   prod:
     LOG_LEVEL: debug
     GITHUB_CLIENT_SECRET: ${ssm:github-client-secret-prod~true}

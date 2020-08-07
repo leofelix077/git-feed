@@ -89,11 +89,13 @@ function* authenticationSaga(action: { code: string }): SagaIterator {
       method: "POST",
     });
 
-    yield all([
-      call(storeValue, LOCAL_STORAGE_LOGGED_IN, JSON.stringify(true)),
-      call(storeValue, LOCAL_STORAGE_USER, JSON.stringify(userInfo)),
-      put(loginSuccess(userInfo)),
-    ]);
+    if (userInfo.token) {
+      yield all([
+        call(storeValue, LOCAL_STORAGE_LOGGED_IN, JSON.stringify(true)),
+        call(storeValue, LOCAL_STORAGE_USER, JSON.stringify(userInfo)),
+        put(loginSuccess(userInfo)),
+      ]);
+    }
   } catch (error) {
     console.log(error);
   }
