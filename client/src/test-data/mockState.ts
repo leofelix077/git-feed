@@ -5,4 +5,8 @@ export const getMockState = (): RootState => ({
   localeDetector: {
     currentLocale: SupportedLocale.Portuguese,
   },
+  authState: {
+    user: null,
+    isLoggedIn: false,
+  },
 });

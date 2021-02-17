@@ -12,6 +12,12 @@ jobs:
             - v2-deps-git-repos-app-web-{{ checksum "client/package.json" }}
             - v2-deps-git-repos-app-web-
       - run: cd client && yarn install
+      - run: |
+          if [ ${CIRCLE_BRANCH} == master ]; then
+            export REACT_ENV=production
+          else
+            export REACT_ENV=development
+          fi
       - save_cache:
           paths:
             - client/node_modules
@@ -56,6 +62,47 @@ jobs:
           name: Deploy to S3 dev bucket
           command: aws s3 sync client/build s3://git-repos-dev.bunchofnothing.com --delete --exact-timestamps
 
+  build-api:
+    docker:
+      - image: circleci/node:12.16.3
+    steps:
+      - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - restore_cache:
+          keys:
+            - v1-deps-api-{{ checksum "api/yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-deps-api
+      - run: cd api && yarn
+      - save_cache:
+          paths:
+            - api/node_modules
+          key: v1-deps-api-{{ checksum "api/yarn.lock" }}
+      - persist_to_workspace:
+          root: .
+          paths: ./*
+      - run: cd api && yarn workspaces run lint
+      # - run: cd api && yarn workspaces run test
+
+  deploy-api:
+    docker:
+      - image: softinstigate/serverless
+    steps:
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - attach_workspace:
+          at: .
+      - run: |
+          if [ ${CIRCLE_BRANCH} == master ]; then
+              export STAGE=prod
+          else
+              export STAGE=dev
+          fi
+          cd api
+          serverless deploy --stage=$STAGE
+      - store_artifacts:
+          path: api/.serverless
+          destination: api.zip
+
 workflows:
   version: 2
   basic-deploy:
@@ -77,3 +124,14 @@ workflows:
             branches:
               only:
                 - develop
+      - build-api
+      - deploy-api:
+          context: AWS
+          requires:
+            - build-api
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+                - /deploy-.*/

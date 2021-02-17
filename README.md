@@ -20,5 +20,6 @@ To execute the application:
 - run **yarn** on the root folder
 - run **yarn** on the client folder
 - run **yarn start** on the client folder
+- open file **apollo.ts** on **./client/src/lib** and update with your own OAuth Token
 
 The application is integrated on CircleCI, so it can be switched to your own endpoint and static host of preference and deployed automatically.

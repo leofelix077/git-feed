@@ -1,16 +1,21 @@
 import React from "react";
 import { mount } from "enzyme";
-import { describe, expect, it } from "@jest/globals";
-import "jsdom-global/register";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
 import mockdate from "mockdate";
 import { MockedProvider } from "@apollo/client/testing";
 import { GetReposDocument } from "../graphql/graphql";
 import ReposContainer from "../components/ReposContainer";
 import { act } from "react-dom/test-utils";
+import { getMockState } from "../test-data/mockState";
+
+const mockStore = configureMockStore();
 
 describe("repos container", () => {
   it("should render component with children", async () => {
     mockdate.set(1593118700000);
+    const store = getMockState();
+    const storeProvider = mockStore(store);
 
     const apolloMocks: any = [
       {
@@ -166,9 +171,11 @@ describe("repos container", () => {
     await act(async () => {
       wrapper = mount(
         (
-          <MockedProvider mocks={apolloMocks}>
-            <ReposContainer queryStringProp="test" />
-          </MockedProvider>
+          <Provider store={storeProvider}>
+            <MockedProvider mocks={apolloMocks}>
+              <ReposContainer queryStringProp="test" />
+            </MockedProvider>
+          </Provider>
         ) as any
       );
       wrapper.update();
